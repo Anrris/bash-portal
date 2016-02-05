@@ -5,6 +5,7 @@ here(){
     source ${PORTAL_PATH}/there
 }
 source ${PORTAL_PATH}/there
+alias here-refresh='source ${PORTAL_PATH}/there'
 #----------------------
 
 
