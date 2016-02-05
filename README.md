@@ -9,7 +9,7 @@ One needs to key-in many letters to go through the right path, and this is why I
 Here is a example of using the "BASH-Portal":
 ```sh
  ~$ cd First_layer/Second_layer    # Go to some folder place
- ~/First_layer/Second_layer$ here  # Mark an blank keyword for this place
+ ~/First_layer/Second_layer$ here  # Mark an empty keyword for this place
  ```
  Now you've marked a folder place with an empty keyword for the future usage.
  You can leave the folder and go to some where, such as:
@@ -41,6 +41,10 @@ there <Enter>
 there-ddd <Enter>
 ```
 
-
 ### Installation
-Will be update later ...
+ 1. Just download this repository and place the folder in someplace.
+ 2. Add the following script in your ~/.bashrc (Linux) or ~/.profile (OSX)
+```sh
+export PORTAL_PATH=~/path-to-the-bash-portal # Place your folder path for the "BASH-Portal" folder
+source ${PORTAL_PATH}/here.source
+```
