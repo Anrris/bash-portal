@@ -15,7 +15,6 @@ Here is a example of using the "BASH-Portal":
  You can leave the folder and go to some where, such as:
  ```sh
  ~/First_layer/Second_layer$ cd    # Return to your home folder
- ~$ pwd
  ```
 And once if you want go back to the place that you marked, just do the following:
  ```sh
@@ -39,6 +38,15 @@ there <Enter>
  - Go to the place where with the "ddd" keyword
 ```sh
 there-ddd <Enter>
+```
+ - Check the portal list that you've made in the past (here -l):
+```sh
+$ here -l <Enter> # -l is the 'L' letter in lower case
+
+alias there='cd /Users/username'; pwd;
+alias there-ddd='cd /Users/username/path-to-ddd'; pwd;
+
+$
 ```
 
 ### Installation
