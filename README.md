@@ -21,7 +21,7 @@ And once if you want go back to the place that you marked, just do the following
  ~$ there            # Directly go to the place that you just marked
  ~/First_ayer/Second_layer$   # Now, you are in the folder you want!
 ```
-Here is the functions of the BASH-Portal:
+### Here are the functions of the BASH-Portal:
 
  - Mark current folder with empty keyword
 ```sh
