@@ -6,7 +6,7 @@ One needs to key-in many letters to go through the right path, and this is why I
 > With BASH-Portal, you can easily mark your current place of a folder, and come back again by using the keyword that you marked in an early time.
 
 # Example
-Here is a example of using the "BASH-Portal":
+Here is an example of using the "BASH-Portal":
 ```sh
  ~$ cd First_layer/Second_layer    # Go to some folder place
  ~/First_layer/Second_layer$ here  # Mark an empty keyword for this place
