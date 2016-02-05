@@ -49,7 +49,7 @@ alias there-ddd='cd /Users/username/path-to-ddd'; pwd;
 $
 ```
 
-### Installation
+# Installation
  1. Just download this repository and place the folder in someplace.
  2. Add the following script in your ~/.bashrc (Linux) or ~/.profile (OSX)
 ```sh
