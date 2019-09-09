@@ -1,74 +1,73 @@
 #!/usr/bin/env python
-import sys
-import os
-import subprocess
+import os, sys, subprocess
+import json
+from os.path import expanduser
+HOME = expanduser("~")
 
-BegThere='# ---- Begin of There operations ----'
+class HTDataHandler(object):
+    def __init__(self, filepath = HOME+'/.ht_database'):
+        self.filepath = filepath
+        self.data_dict = dict()
 
-def CheckThere(path):
-	status, output = subprocess.getstatusoutput("cat "+path)
-	lines = output.split('\n')
+        if os.path.exists(self.filepath):
+            with open(self.filepath, 'r') as file:
+                self.data_dict = json.loads(file.read())
 
-	status, pwd = subprocess.getstatusoutput("pwd")
+    def addShortcutAlias(self, alias):
+        _, path = subprocess.getstatusoutput("pwd")
+        self.data_dict[alias] = path
+        self.update()
 
-	is_find=False
+    def removeShortcutAlias(self, alias):
+        if alias in self.data_dict:
+            self.data_dict.pop(alias)
+        self.update()
 
-	arg='there'
-	if len(sys.argv)==2 :
-		if sys.argv[1]=="-l":
-			print("")
-			for l in range(2,len(lines)): print(lines[l])
-			print("")
-			return lines
-		elif sys.argv[1][0]=='-':
-			print("")
-			print("Invalid operation: ", sys.argv[1])
-			print("")
-			return lines
-		else: arg=arg+'-'+sys.argv[1]+'='
-	else				:
-		arg=arg+'='
+    def update(self):
+        with open(self.filepath, 'w') as file:
+            file.write(json.dumps(self.data_dict))
 
+    def showAll(self):
+        for key in sorted(self.data_dict):
+            path = self.data_dict[key]
+            if key == '-':
+                print('there', ' => ', path)
+            else:
+                print('there-'+key, ' => ', path)
 
-	if len(lines)==0:
-		lines.append("#!/bin/bash")
-		lines.append(BegThere)
-		lines.append('alias '+arg+'\'cd '+pwd+'/ ; pwd\'')
-	elif len(lines)==1:
-		lines[0]="#!/bin/bash"
-		lines.append(BegThere)
-		lines.append('alias '+arg+'\'cd '+pwd+'/ ; pwd\'')
-	elif len(lines)==2:
-		lines[0]="#!/bin/bash"
-		lines[1]=BegThere
-		lines.append('alias '+arg+'\'cd '+pwd+'/ ; pwd\'')
-	else:
-		for ii in range(len(lines)):
-			line=lines[ii]
-			if line.find(arg) != -1 :
-				lines[ii]='alias '+arg+'\'cd '+pwd+'/ ; pwd\''
+    def generateSourceFile(self):
+        alias_source = "#!/bin/bash\n"
+        for key in sorted(self.data_dict):
+            path = self.data_dict[key]
+            if key == '-':
+                alias_source += "alias there='cd "+path+"; pwd'\n"
+            else:
+                alias_source += "alias there-"+key+"='cd "+path+"; pwd'\n"
 
-				print("")
-				for l in range(2,len(lines)): print(lines[l])
-				print("")
+        with open(HOME+'/.there_source', 'w') as file:
+            file.write(alias_source)
 
-				return lines
+if __name__ == "__main__":
 
-		lines.append('alias '+arg+'\'cd '+pwd+'/ ; pwd\'')
+    if len(sys.argv) == 1:
+        data_io = HTDataHandler()
+        data_io.addShortcutAlias('-')
+        data_io.showAll()
+        data_io.generateSourceFile()
 
-		print("")
-		for l in range(2,len(lines)): print(lines[l])
-		print("")
+ 
 
-	return lines
+    if len(sys.argv) == 2:
+        data_io = HTDataHandler()
+        if sys.argv[1] == '-l':
+            data_io.showAll()
+        else:
+            data_io.addShortcutAlias(sys.argv[1])
+            data_io.showAll()
+            data_io.generateSourceFile()
 
-
-there_path = os.environ.get('PORTAL_PATH')+"/there"
-lines=CheckThere(there_path)
-
-there_file=open(there_path,'w')
-for line in lines: there_file.write(line+'\n')
-there_file.close()
-
-status, output = subprocess.getstatusoutput("source_there")
-
+    if len(sys.argv) == 3 and sys.argv[1] == '-D':
+        data_io = HTDataHandler()
+        data_io.removeShortcutAlias(sys.argv[2])
+        data_io.showAll()
+        data_io.generateSourceFile()

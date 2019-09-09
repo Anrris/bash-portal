@@ -2,10 +2,17 @@
 #--- The here operation
 here(){
     python ${PORTAL_PATH}/here.py $1
-    source ${PORTAL_PATH}/there
+    source ~/.there_source
 }
-source ${PORTAL_PATH}/there
-alias here-refresh='source ${PORTAL_PATH}/there'
+
+dhere(){
+    unalias there-$1
+    python ${PORTAL_PATH}/here.py -D $1
+    source ~/.there_source
+}
+
+source ~/.there_source
+alias here-refresh='source ~/.there_source'
 #----------------------
 
 
