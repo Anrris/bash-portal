@@ -1,17 +1,25 @@
 
 #--- The here operation
+run_there_source(){
+    THERE_SOURCE_FILE=~/.there_source
+    if test -f "$THERE_SOURCE_FILE"; then
+        source ~/.there_source
+    fi
+}
+
 here(){
     python ${PORTAL_PATH}/here.py $1
-    source ~/.there_source
+    #source ~/.there_source
+    run_there_source
 }
 
 dhere(){
     unalias there-$1
     python ${PORTAL_PATH}/here.py -D $1
-    source ~/.there_source
+    run_there_source
 }
 
-source ~/.there_source
+run_there_source
 alias here-refresh='source ~/.there_source'
 #----------------------
 
